@@ -1,6 +1,6 @@
 (function(){
 
-	var todos = [];
+  var todos = [];
   var existingValues;
 
   function loadPrevValues() {
@@ -15,6 +15,10 @@
   function getValuesFromForm() {
     var done;
     var priority;
+    var name = $('#name').val();
+    var title = $('#title').val();
+    var dueDate = $('#dueDate').val();
+    
     if ($('#doneT').is(':checked')) {
       done = ($('#doneT').val());
     } else if ($('#doneF').is(':checked')) {
@@ -30,7 +34,15 @@
     }
     
     //console.log(getValuesFromForm);
+    if (done.length && priority.length && name.length && title.length && dueDate.length) {
+      storeIntoList(name, title, done, dueDate, priority);
+    } else {
+      console.log("form empty");
+    }
+  }
 
+  function storeIntoList(name, title, done, dueDate, priority) {
+    console.log("form not empty");
     var todo = {
         name: $('#name').val(),
         title: $('#title').val(),
@@ -84,7 +96,7 @@
     $(this).toggleClass('bg-secondary');
   });
     
-  window.localStorage.removeItem('allVal');
+  //localStorage.removeItem('allVal');
     
   $('#list').sortable({
     axis: 'y',
