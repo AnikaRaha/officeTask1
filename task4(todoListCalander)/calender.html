@@ -1,0 +1,99 @@
+<html>
+<head>
+	<title>Calendar</title>
+	<link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+	<script src='fullcalendar/lib/jquery.min.js'></script>
+	<script src='fullcalendar/lib/moment.min.js'></script>
+	<script src='fullcalendar/fullcalendar.js'></script>
+	
+	
+	<script type='text/javascript'>
+
+	$(document).ready(function() {
+		//var arr = [];
+	    $('#calendar').fullCalendar({
+		    customButtons: {
+		        backToList: {
+		            text: 'Back To List View',
+		            click: function() {
+		                //<a href="/index.html">ta da</a>;
+		                window.location.href = "index.html";
+		            }
+		        }
+		    },
+		    header: {
+		        left: 'prev,next today backToList',
+		        center: 'title',
+		        right: 'month,agendaWeek,agendaDay'
+		    },
+		    selectable: true,
+		    selectHelper: true,
+		    editable: true,
+		    eventLimit: true,
+		    events: addEvent(),
+		    eventDrop: function changeEvent(event) {
+				//alert("event drop alert");
+				var newArr = [];
+				var arr = JSON.parse(localStorage.getItem('allVal'));
+				var newDate = event.start._i[0] + "-" + (event.start._i[1]+1) + "-" + event.start._i[2];
+				//console.log(new Date(newDate));
+				for (var i = 0; i < arr.length; i++) {
+		    		if (arr[i].uid == event.eventID) {
+		    			//alert("boom");
+		    			arr[i].dueDate = newDate;
+		    		};
+		    		//console.log($.type(arr[i].dueDate));
+		    	};
+		    	console.log(arr);
+		    	localStorage.setItem("allVal", JSON.stringify(arr));
+			}//changeEvent(event)
+		    
+		});
+
+		function addEvent(){
+			var events = [];
+			var arr = JSON.parse(localStorage.getItem('allVal'));
+			//console.log('arr',arr);
+			for (var i = 0; i < arr.length; i++) {
+	    		//console.log(arr[i].dueDate);
+	    		events.push({
+	    			title  : arr[i].title,
+			        start  : new Date(arr[i].dueDate),
+			        eventID : arr[i].uid
+	    		});
+	    	};
+
+	    	console.log(events);
+
+	    	return events;
+		}
+
+		/*function changeEvent(event) {
+			//alert("event drop alert");
+			var newArr = [];
+			var arr = JSON.parse(localStorage.getItem('allVal'));
+			var newDate = event.start._i[0] + "-" + (event.start._i[1]+1) + "-" + event.start._i[2];
+			//console.log(new Date(newDate));
+			for (var i = 0; i < arr.length; i++) {
+	    		if (arr[i].uid == event.eventID) {
+	    			//alert("boom");
+	    			arr[i].dueDate = newDate;
+	    		};
+	    		//console.log($.type(arr[i].dueDate));
+	    	};
+	    	console.log(arr);
+	    	localStorage.setItem("allVal", JSON.stringify(arr));
+
+		}*/
+
+		
+	});
+
+	</script>
+</head>
+<body>
+
+	<div id='calendar'></div>
+
+</body>
+</html>
